@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>JSON <=> String Parser</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+
+    <style>
+      .pad-all {
+        padding: 2em;
+      }
+
+      textarea.form-control[readonly] {
+        background-color: #A9BDBD;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container pad-all">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="text-center">String <=> JSON</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+             <textarea class="form-control" placeholder="Enter Stringified JSON to convert here..." id="string" rows=10></textarea>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+             <textarea class="form-control" id="json" rows=10 readonly></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-block btn-warning text-center btn-convert">&nbsp;&lt;=&gt;&nbsp;</button> 
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    const convertButton = document.querySelector('.btn-convert')
+    convertButton.addEventListener('click', _ => {
+      const jsonInput = document.querySelector('#json')
+      const stringInput = document.querySelector('#string')
+      const leadingTrailingQuotes = /^\"|\"$/g
+      const firstLevelMemberQuotesRegex = /\\\"/g
+      const nestedLevelMemberQuotesRegex = /\\\\\"/g
+      const formattedJSONString = stringInput.value.trim()
+        .replace(leadingTrailingQuotes, '')
+        .replace(firstLevelMemberQuotesRegex, '"')
+        .replace(nestedLevelMemberQuotesRegex, '\\\"')
+
+      if (formattedJSONString.charAt(0) !== '{') {
+        return alert('Invalid JSON string')
+      } else {
+        jsonInput.value = JSON.stringify(JSON.parse(formattedJSONString))        
+      }
+    })
+  </script>
+</html>
