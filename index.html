@@ -49,8 +49,10 @@
       const leadingTrailingQuotes = /^\"|\"$/g
       const firstLevelMemberQuotesRegex = /\\\"/g
       const nestedLevelMemberQuotesRegex = /\\\\\"/g
+      const carriageReturnSpacesAndTabs = /\\n|\\s|\\r/g
       const formattedJSONString = stringInput.value.trim()
         .replace(leadingTrailingQuotes, '')
+        .replace(carriageReturnSpacesAndTabs, '')
         .replace(firstLevelMemberQuotesRegex, '"')
         .replace(nestedLevelMemberQuotesRegex, '\\\"')
 
